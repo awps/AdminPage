@@ -1,6 +1,9 @@
 # WP-Admin-Page
 Advanced  WordPress Admin pages(with tabs), the easy way...
 
+###License: GPL
+The license allows the usage in any projects(personal or commercial). An attribution link is not required, but highly appreciated.
+
 ##Requirements:
 
  * WordPress 3.4+
