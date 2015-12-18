@@ -73,7 +73,22 @@ public function settings(){
 public function settings(){
 	return array(
 		'label'    => '', // The tab title. If empty the ID will be used(tab slug).
-		'callback' => array( $this, 'page' ), // Optional. The function used to display the tab content. Default to method 'page' of he current class. Use it only if needed.
+		'callback' => array( $this, 'page' ), // Optional. The function used to display the tab content. Default to method 'page' of the current class. Use it only if needed.
 	);
+}
+```
+
+###Add scripts and styles
+
+`enqueue()`. This method allows to enqueue scripts and styles only on the page that you've created. The scripts and styles will be available in all other tabs that you'll create. This method is available in `WPAP\Tab` as well and the rules are the same(the scripts/styles will be available in all other tabs and parent page).
+
+Here is a basic example:
+```php
+public function enqueue(){
+	wp_register_style( 'example-css', 'example.css' );
+	wp_enqueue_style( 'example-css' );
+
+	wp_register_script( 'example-js', 'example.js' );
+	wp_enqueue_script( 'example-js' );
 }
 ```
