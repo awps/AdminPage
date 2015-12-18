@@ -92,3 +92,9 @@ public function enqueue(){
 	wp_enqueue_script( 'example-js' );
 }
 ```
+
+###Using in plugins:
+
+This piece of code can be included in plugins as it is and will work without problems, but it is recomended to replace the namespace `WPAP` and the text domain, which is the same `WPAP`, with your own. Doing so you'll avoid conflicts with other plugins using this code as well.<br>
+To do this, just do a global search&replace in your favorite text editor.<br>
+Happy coding.
