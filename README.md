@@ -1,20 +1,19 @@
 # WP-Admin-Page
 Advanced  WordPress Admin pages(with tabs), the easy way...
 
-####Requirements:
+##Requirements:
 
  * WordPress 3.4+
  * PHP 5.3+
  
-####How to use:
-
-**1. Include the files:**
+##How to use:
+###Include the files
 ```php
-require_once "Page.class.php";
-require_once "Tab.class.php";
+require_once "AdminPage/Page.class.php";
+require_once "AdminPage/Tab.class.php";
 ```
 
-**2. Create a new page(minimum requierements):**
+###Create a page
 ```php
 class ExamplePage extends WPAP\Page{
 
@@ -33,8 +32,23 @@ $example_page = new ExamplePage('page-slug');
 $example_page->init(); //Initialize this page.
 ```
 
-**3. See it in action:**
+The page is available at: *[site_url]/wp-admin/admin.php?page=`page-slug`*
 
-Actually this is not the step 3. 
+###Create a tab
+```php
+class ExampleTab extends WPAP\Tab{
 
-You can see your page on: *[site_url]/wp-admin/admin.php?page=`page-slug`*
+	public function settings(){
+		return array(
+			'label' => __('Tab title', 'text-domain')
+		);
+	}
+
+	public function page(){
+	  echo 'Tab content here!';
+	}
+}
+new ExampleTab('tabid', 'page-slug');
+```
+
+The tab is available at: *[site_url]/wp-admin/admin.php?`page=page-slug&tab=tabid`*
