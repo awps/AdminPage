@@ -7,7 +7,7 @@
 * @since 1.0
 *
 */
-namespace WPAP;
+namespace ZeroWP;
 
 class Tab{
 	
@@ -94,7 +94,7 @@ class Tab{
 	 * @return array The final settings 
 	 */
 	public function page(){
-		_e('Congrats! you\'ve created a new page tab.', 'WPAP');
+		_e('Congrats! you\'ve created a new page tab.', 'ZeroWP');
 	}
 
 	//------------------------------------//--------------------------------------//

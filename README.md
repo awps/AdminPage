@@ -1,5 +1,5 @@
-# WP-Admin-Page
-Advanced  WordPress Admin pages(with tabs), the easy way...
+# ZeroWP
+Advanced  WordPress Admin pages, the easy way...
 
 ###License: GPL
 The license allows the usage in any projects(personal or commercial). An attribution link is not required, but very appreciated.
@@ -18,7 +18,7 @@ require_once "AdminPage/Tab.class.php";
 
 ###Create a page
 ```php
-class ExamplePage extends WPAP\Page{
+class ExamplePage extends ZeroWP\Page{
 
 	public function settings(){
 		return array(
@@ -39,7 +39,7 @@ The page is available at: *[site_url]/wp-admin/admin.php?page=`page-slug`*
 
 ###Create a tab
 ```php
-class ExampleTab extends WPAP\Tab{
+class ExampleTab extends ZeroWP\Tab{
 
 	public function settings(){
 		return array(
@@ -56,7 +56,7 @@ new ExampleTab('tabid', 'page-slug');
 
 The tab is available at: *[site_url]/wp-admin/admin.php?`page=page-slug&tab=tabid`*
 
-###All available settings for pages: `WPAP\Page`
+###All available settings for pages: `ZeroWP\Page`
 ```php
 public function settings(){
 	return array(
@@ -71,7 +71,7 @@ public function settings(){
 }
 ```
 
-###All available settings for tabs: `WPAP\Tab`
+###All available settings for tabs: `ZeroWP\Tab`
 ```php
 public function settings(){
 	return array(
@@ -83,7 +83,7 @@ public function settings(){
 
 ###Add scripts and styles
 
-`enqueue()`. This method allows to enqueue scripts and styles only on the page that you've created. The scripts and styles will be available in all other tabs that you'll create. This method is available in `WPAP\Tab` as well and the rules are the same(the scripts/styles will be available in all other tabs and parent page).
+`enqueue()`. This method allows to enqueue scripts and styles only on the page that you've created. The scripts and styles will be available in all other tabs that you'll create. This method is available in `ZeroWP\Tab` as well and the rules are the same(the scripts/styles will be available in all other tabs and parent page).
 
 Here is a basic example:
 ```php
@@ -98,6 +98,6 @@ public function enqueue(){
 
 ###Using in plugins:
 
-This piece of code can be included in plugins as it is and will work without problems, but it is recomended to replace the namespace `WPAP` and the text domain, which is the same `WPAP`, with your own. Doing so you'll avoid conflicts with other plugins using this code as well.<br>
+This piece of code can be included in plugins as it is and will work without problems, but it is recomended to replace the namespace `ZeroWP` and the text domain, which is the same `ZeroWP`, with your own. Doing so you'll avoid conflicts with other plugins using this code as well.<br>
 To do this, just do a global search&replace in your favorite text editor.<br>
 Happy coding.

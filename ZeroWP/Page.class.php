@@ -7,7 +7,7 @@
 * @since 1.0
 *
 */
-namespace WPAP;
+namespace ZeroWP;
 
 class Page{
 
@@ -68,7 +68,7 @@ class Page{
 	 * @return string The HTML page
 	 */
 	public function page(){
-		_e('Congrats! you\'ve created a new page.', 'WPAP');
+		_e('Congrats! you\'ve created a new page.', 'ZeroWP');
 	}
 	
 	//------------------------------------//--------------------------------------//
@@ -253,7 +253,7 @@ class Page{
 	protected function tabs(){
 		
 		$settings = $this->settings();
-		$default_tab_label = _x('General', 'Default tab name.', 'WPAP');
+		$default_tab_label = _x('General', 'Default tab name.', 'ZeroWP');
 		if( !empty($settings['default_tab_label']) ){
 			if( trim($settings['default_tab_label']) !== false ){
 				$default_tab_label = esc_html( $settings['default_tab_label'] );
