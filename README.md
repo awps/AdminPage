@@ -14,8 +14,8 @@ The license allows the usage in any projects(personal or commercial). An attribu
 ##How to use:
 ###Include the files
 ```php
-require_once "AdminPage/Page.class.php";
-require_once "AdminPage/Tab.class.php";
+require_once "ZeroWP/Page.class.php";
+require_once "ZeroWP/Tab.class.php";
 ```
 
 ###Create a page
