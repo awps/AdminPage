@@ -1,4 +1,4 @@
-# ZeroWP
+# ZeroWP - AdminPage
 Advanced  WordPress Admin pages, the easy way...
 
 ##This project is currently in `alpha` stage. The current code is fully functional, but may expect radical changes in the future!
@@ -8,19 +8,17 @@ The license allows the usage in any projects(personal or commercial). An attribu
 
 ##Requirements:
 
- * WordPress 3.4+
  * PHP 5.3+
  
 ##How to use:
 ###Include the files
 ```php
-require_once "ZeroWP/Page.class.php";
-require_once "ZeroWP/Tab.class.php";
+require_once dirname(__FILE__) . "/src/AdminPage/mod.php";
 ```
 
 ###Create a page
 ```php
-class ExamplePage extends ZeroWP\Page{
+class ExamplePage extends ZeroWP\Admin\Page{
 
 	public function settings(){
 		return array(
@@ -41,7 +39,7 @@ The page is available at: *[site_url]/wp-admin/admin.php?page=`page-slug`*
 
 ###Create a tab
 ```php
-class ExampleTab extends ZeroWP\Tab{
+class ExampleTab extends ZeroWP\Admin\Tab{
 
 	public function settings(){
 		return array(
@@ -58,7 +56,7 @@ new ExampleTab('tabid', 'page-slug');
 
 The tab is available at: *[site_url]/wp-admin/admin.php?`page=page-slug&tab=tabid`*
 
-###All available settings for pages: `ZeroWP\Page`
+###All available settings for pages: `ZeroWP\Admin\Page`
 ```php
 public function settings(){
 	return array(
@@ -73,7 +71,7 @@ public function settings(){
 }
 ```
 
-###All available settings for tabs: `ZeroWP\Tab`
+###All available settings for tabs: `ZeroWP\Admin\Tab`
 ```php
 public function settings(){
 	return array(

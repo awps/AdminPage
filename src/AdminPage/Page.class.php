@@ -7,7 +7,7 @@
 * @since 1.0
 *
 */
-namespace ZeroWP;
+namespace ZeroWP\Admin;
 
 class Page{
 
