@@ -83,7 +83,7 @@ public function settings(){
 
 ###Add scripts and styles
 
-`enqueue()`. This method allows to enqueue scripts and styles only on the page that you've created. The scripts and styles will be available in all other tabs that you'll create. This method is available in `ZeroWP\Tab` as well and the rules are the same(the scripts/styles will be available in all other tabs and parent page).
+`enqueue()`. This method allows to enqueue scripts and styles only on the page that you've created. The scripts and styles will be available in all other tabs that you'll create. This method is also available in `ZeroWP\Admin\Tab` and the rules are the same(the scripts/styles will be available in all other tabs and parent page).
 
 Here is a basic example:
 ```php
