@@ -94,7 +94,7 @@ class Tab{
 	 * @return array The final settings 
 	 */
 	public function page(){
-		_e('Congrats! you\'ve created a new page tab.', 'ZeroWP');
+		return false;
 	}
 
 	//------------------------------------//--------------------------------------//

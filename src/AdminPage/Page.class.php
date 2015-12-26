@@ -68,7 +68,7 @@ class Page{
 	 * @return string The HTML page
 	 */
 	public function page(){
-		_e('Congrats! you\'ve created a new page.', 'ZeroWP');
+		return false;
 	}
 	
 	//------------------------------------//--------------------------------------//

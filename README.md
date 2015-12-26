@@ -131,6 +131,6 @@ public function enqueue(){
 
 ###Using in plugins:
 
-This piece of code can be included in plugins as it is and will work without problems, but it is recomended to replace the namespace `ZeroWP` and the text domain, which is the same `ZeroWP`, with your own. Doing so you'll avoid conflicts with other plugins using this code as well.<br>
-To do this, just do a global search&replace in your favorite text editor.<br>
+This piece of code can be included in plugins as it is and will work without problems, but it is recomended to replace the namespace `ZeroWP` with your own. Doing so you'll avoid conflicts with other plugins that are using this code as well.<br>
+Just do a global search&replace in your favorite text editor and you're done!<br>
 Happy coding.
