@@ -57,29 +57,65 @@ new ExampleTab('tabid', 'page-slug');
 The tab is available at: *[site_url]/wp-admin/admin.php?`page=page-slug&tab=tabid`*
 
 ###All available settings for pages: `ZeroWP\Admin\Page`
+
+All settings are optional. Use only that you need.
+
 ```php
 public function settings(){
 	return array(
-		'menu_title'    => '', // The menu title. If empty the ID will be used(page slug).
-		'page_title'    => '', //The text to be displayed in the title tags of the page when the menu is selected. If empty 'menu_title' is used 
-		'menu_type'     => 'menu', //Or 'submenu'
-		'parent_slug'   => null, // If 'menu_type' is 'submenu' specify the parent page slug. Eg: tools.php
-		'capability'    => 'manage_options', // Who can access the page. See: https://codex.wordpress.org/Roles_and_Capabilities
-		'menu_icon'     => '', //The icon for this menu. Only if 'menu_type' is 'menu'. https://codex.wordpress.org/Function_Reference/add_menu_page#Parameters
-		'menu_position' => null, //The position in the menu order this menu should appear. https://codex.wordpress.org/Function_Reference/add_menu_page#Parameters
+		'menu_title'    => '',
+		'page_title'    => '',
+		'menu_type'     => 'menu',
+		'parent_slug'   => null,
+		'capability'    => 'manage_options',
+		'menu_icon'     => '',
+		'menu_position' => null,
+		'default_tab_label' => '',
 	);
 }
 ```
 
+* **'menu_title'**<br />
+	Default: `''`.  The menu title. If empty the ID will be used(page slug).
+
+* **'page_title'**<br />
+	Default: `''`. The text to be displayed in the title tags of the page when the menu is selected. If empty 'menu_title' is used 
+
+* **'menu_type'**<br />
+	Default: `'menu'`. The menu type `'menu'` or `'submenu'`. 
+
+* **'parent_slug'**<br />
+	Default: `null`.  If 'menu_type' is 'submenu' specify the parent page slug. Eg: tools.php
+
+* **'capability'**<br />
+	Default: `'manage_options'`.  Who can access the page. See: https://codex.wordpress.org/Roles_and_Capabilities
+
+* **'menu_icon'**<br />
+	Default: `''`. The icon for this menu. Only if 'menu_type' is 'menu'. https://codex.wordpress.org/Function_Reference/add_menu_page#Parameters
+
+* **'menu_position'**<br />
+	Default: `null`. The position in the menu order this menu should appear. https://codex.wordpress.org/Function_Reference/add_menu_page#Parameters
+
+* **'default_tab_label'**<br />
+	Default: `''`.  Default tab label. Setting this, will change the title of default tab(first tab), else will use the 'menu_title'.
+
 ###All available settings for tabs: `ZeroWP\Admin\Tab`
+
+All settings are optional. Use only that you need.
+
 ```php
 public function settings(){
 	return array(
-		'label'    => '', // The tab title. If empty the ID will be used(tab slug).
-		'callback' => array( $this, 'page' ), // Optional. The function used to display the tab content. Default to method 'page' of the current class. Use it only if needed.
+		'label'    => '',
+		'callback' => array( $this, 'page' ),
 	);
 }
 ```
+
+* **'label'**<br>
+	The tab title. If empty the ID will be used(tab slug).
+* **'callback'**<br> => array( $this, 'page' ), 
+	Optional. The function used to display the tab content. Default to method 'page' of the current class. **Use it only if needed.**
 
 ###Add scripts and styles
 

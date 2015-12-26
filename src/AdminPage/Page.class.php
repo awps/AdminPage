@@ -122,37 +122,6 @@ class Page{
 	//------------------------------------//--------------------------------------//
 	
 	/**
-	 * Get a list of all possible query args
-	 *
-	 * Get a list of all possible query args
-	 *
-	 * @return array 
-	 */
-	protected function allQueryArgs($exclude = false){
-		$query_args = array();
-		$new_query_args = array('section');
-		$tabs = $this->tabs();
-		if( !empty($tabs) ) : 
-			foreach ($this->tabs() as $tab_key => $tab) {
-				if( !empty($tab['query_args']) && is_array($tab['query_args']) ){
-					foreach ($tab['query_args'] as $query) {
-						$new_query_args[] = $query;
-					}
-				}					
-			}
-		endif;
-
-		if( $exclude ){
-			foreach ( (array) $exclude as $ex) {
-				unset( $new_query_args[ $ex ] );
-			}
-		}
-		return $new_query_args;
-	}
-
-	//------------------------------------//--------------------------------------//
-	
-	/**
 	 * Show Tabs
 	 *
 	 * Display tabs on page if their number is 2 or higher
@@ -160,7 +129,6 @@ class Page{
 	 * @return string The HTML 
 	 */
 	protected function showTabs(){
-		$remove_query_arg = $this->allQueryArgs();
 		if( count($this->tabs()) > 1 ) : 
 			echo '<h2 class="nav-tab-wrapper">';
 				foreach ($this->tabs() as $tab_key => $tab) {
@@ -173,7 +141,6 @@ class Page{
 				}
 			echo'</h2>';
 		endif;
-		$this->showSections();
 	}
 
 	//------------------------------------//--------------------------------------//
@@ -210,31 +177,14 @@ class Page{
 			if( $id == $this->currentTab() ){
 				echo '<div class="tab-container'. $active_class .'">';
 					
-					
-						$sections = $this->sections($tab['id']);
-						
-						if( $this->currentTab() == $this->currentSection() ){
-							if( $id == 'general' ){
-								$this->page();
-							}
-							if( isset($tab['callback']) ){
-								$callback = $tab['callback'];
-								call_user_func($callback);
-							}
-							do_action($this->action('tab_' . $id));
-						}
-						elseif( !empty( $sections ) ){
-							foreach ($sections as $sect_key => $sect_value) {
-								if( $this->currentSection() == $sect_value['id'] ){
-									if( isset($sect_value['callback']) ){
-										$callback = $sect_value['callback'];
-										call_user_func($callback);
-									}
-									do_action($this->action('section_' . $sect_value['id'] . '_tab_' . $id));
-								}
-							}
-						}
-
+					if( $id == $this->id ){
+						$this->page();
+					}
+					if( isset($tab['callback']) ){
+						$callback = $tab['callback'];
+						call_user_func($callback);
+					}
+					do_action($this->action('tab_' . $id));
 
 				echo '</div>';
 			}
@@ -253,19 +203,18 @@ class Page{
 	protected function tabs(){
 		
 		$settings = $this->settings();
-		$default_tab_label = _x('General', 'Default tab name.', 'ZeroWP');
-		if( !empty($settings['default_tab_label']) ){
-			if( trim($settings['default_tab_label']) !== false ){
-				$default_tab_label = esc_html( $settings['default_tab_label'] );
-			}
+		if( !empty($settings['default_tab_label']) && trim($settings['default_tab_label']) !== false ){
+			$default_tab_label = esc_html( $settings['default_tab_label'] );
+		}
+		else{
+			$default_tab_label = $settings['menu_title'];
 		}
 
 		$default_tab[] = array(
-			'id' => 'general',
+			'id' => sanitize_title( $this->id ),
 			'label' => $default_tab_label,
 		);
 		$all_tabs         = apply_filters( $this->filter('add_tabs'), $default_tab);
-		$all_tab_sections = apply_filters( $this->filter('add_tab_sections'), array());
 		$final_tabs       = array();
 		$tab_count        = 0;
 
@@ -294,29 +243,6 @@ class Page{
 			//Custom query args
 			$final_tabs[$tab_count]['query_args'] = !empty($tab['query_args']) ? (array) $tab['query_args'] : array();
 
-			//Tab sections
-			if( isset($tab['sections']) && is_array($tab['sections']) ) {
-				$tab_sections = $tab['sections'];
-			}
-			else{
-				$tab_sections = array();
-			}
-
-			//Final sections
-			$final_sections = $tab_sections;
-			
-			if( !empty($all_tab_sections) && is_array($all_tab_sections) ){
-				foreach ($all_tab_sections as $skey => $svalue) {
-					if( !empty($svalue['tab']) && $tab['id'] == $svalue['tab'] ){
-						$final_sections[] = $all_tab_sections[$skey];
-					}
-					else{
-						continue;
-					}
-				}
-			}
-
-			$final_tabs[$tab_count]['sections'] = $final_sections;
 			$tab_count++;
 		}
 
@@ -346,7 +272,7 @@ class Page{
 	 * @return string Tab ID
 	 */
 	protected function currentTab(){
-		return isset( $_GET[ 'tab' ] ) && in_array($_GET[ 'tab' ], $this->possibleTabs()) ? $_GET[ 'tab' ] : 'general';
+		return isset( $_GET[ 'tab' ] ) && in_array($_GET[ 'tab' ], $this->possibleTabs()) ? $_GET[ 'tab' ] : $this->id;
 	}
 	
 	//------------------------------------//--------------------------------------//
@@ -361,119 +287,6 @@ class Page{
 	public function add_tabs( $function_to_add, $priority = 10, $accepted_args = 1 ){
 		return $this->add_filter('add_tabs', $function_to_add, $priority, $accepted_args);
 	}
-
-	//------------------------------------//--------------------------------------//
-	
-	/**
-	 * Show Sections
-	 *
-	 * Display the sections for a specific tab
-	 *
-	 * @return string The HTML 
-	 */
-	protected function showSections(){
-		foreach ($this->tabs() as $tab_key => $tab_value) {
-			if( $tab_value['id'] == $this->currentTab() ){
-				if( isset($tab_value['sections']) ){
-					if( count($tab_value['sections']) > 0 ){
-						echo '<ul class="subsubsub">';
-						
-						//Determine the label for default section
-						$settings = $this->settings();
-						$default_section_label = $tab_value['label'];
-						if( !empty($settings['default_section_label']) ){
-							if( trim($settings['default_section_label']) !== false ){
-								$default_section_label = esc_html( $settings['default_section_label'] );
-							}
-						}
-						
-						$remove_query_arg = $this->allQueryArgs(array('section'));
-						
-						//Add current tab section
-						$active_class = $this->currentSection() == $tab_value['id'] ? ' class="current"' : '';
-						echo ' <li><a href="'. add_query_arg( array('section' => $tab_value['id']), remove_query_arg( $remove_query_arg ) ) .'"'. $active_class .'>
-								'. $default_section_label .'
-							</a> | </li> ';
-
-						//Add other sections
-						foreach ($tab_value['sections'] as $sect_key => $sect_value) {
-
-							$is_current = $this->currentSection() == $sect_value['id'] ? true : false;
-							$active_class = $is_current ? ' class="current"' : '';
-
-							echo ' <li><a href="'. add_query_arg( array('section' => $sect_value['id']), remove_query_arg( $remove_query_arg ) ) .'"'. $active_class .'>
-								'. $sect_value['label'] .'
-							</a> | </li> ';
-						}
-						echo '</ul><hr class="clear">';
-					}
-				}
-			}
-		}
-	}
-
-	//------------------------------------//--------------------------------------//
-	
-	/**
-	 * Get current section ID
-	 *
-	 * Get current section ID from URL
-	 *
-	 * @return string Section ID
-	 */
-	protected function currentSection(){
-		return isset( $_GET[ 'section' ] ) 
-			&& in_array( $_GET[ 'section' ], $this->possibleSections( $this->currentTab() ) ) ? $_GET[ 'section' ] : $this->currentTab();
-	}
-
-	//------------------------------------//--------------------------------------//
-	
-	/**
-	 * All section from a tab
-	 *
-	 * Get all sections from a tab by id
-	 *
-	 * @return array All sections in an associative array. 
-	 */
-	protected function sections($tab_id){
-		foreach ($this->tabs() as $tab_key => $tab_value) {
-			if( $tab_value['id'] == $tab_id ){
-				if( isset($tab_value['sections']) && is_array($tab_value['sections']) ){
-					return $tab_value['sections'];
-				}
-				else{
-					return array();
-				}
-			}
-		}
-	}
-
-	//------------------------------------//--------------------------------------//
-	
-	/**
-	 * All possible sections
-	 *
-	 * Get all possible sections ids from current tab
-	 *
-	 * @return array All sections ids in an associative array. 
-	 */
-	protected function possibleSections($tab_id){
-		return wp_list_pluck( $this->sections($tab_id), 'id' );
-	}
-
-	//------------------------------------//--------------------------------------//
-
-	/**
-	 * Add sections
-	 *
-	 * Add additional sections to a tab from this admin panel. Hook.
-	 *
-	 * @return void
-	 */
-	public function add_sections( $function_to_add, $priority = 10, $accepted_args = 1 ){
-		return $this->add_filter('add_tab_sections', $function_to_add, $priority, $accepted_args);
-	}
-
 
 	//------------------------------------//--------------------------------------//
 	
