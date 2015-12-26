@@ -107,15 +107,12 @@ All settings are optional. Use only that you need.
 public function settings(){
 	return array(
 		'label'    => '',
-		'callback' => array( $this, 'page' ),
 	);
 }
 ```
 
 * **'label'**<br>
-	The tab title. If empty the ID will be used(tab slug).
-* **'callback'**<br> => array( $this, 'page' ), 
-	Optional. The function used to display the tab content. Default to method 'page' of the current class. **Use it only if needed.**
+	Default: `''`. The tab title. If empty the ID will be used(tab slug).
 
 ###Add scripts and styles
 
