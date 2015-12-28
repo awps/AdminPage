@@ -1,8 +1,6 @@
 # ZeroWP - AdminPage
 Advanced  WordPress Admin pages, the easy way...
 
-##This project is currently in `alpha` stage. The current code is fully functional, but may expect radical changes in the future!
-
 ###License: GPL
 The license allows the usage in any projects(personal or commercial). An attribution link is not required, but very appreciated.
 
