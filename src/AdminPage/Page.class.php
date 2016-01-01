@@ -301,17 +301,7 @@ class Page{
 	public function menu(){
 		if( ! $this->_menuExists($this->id) ){ // If menu does not exist, create it.
 			$settings = $this->pageSettings( (array) $this->settings() );
-			if( $settings['menu_type'] == 'submenu' ){
-				add_submenu_page( 
-					$settings['parent_slug'],      // Parent page slug
-					$settings['page_title'],       // Page title
-					$settings['menu_title'],       // Menu title
-					$settings['capability'],       // Capability
-					$this->id,                     // Menu slug
-					array($this, 'displayPage')    // Calback function to display the page contents
-				);
-			}
-			elseif( $settings['menu_type'] == 'menu' ){
+			if( $settings['parent_slug'] === false ){
 				add_menu_page( 
 					$settings['page_title'],       // Page title
 					$settings['menu_title'],       // Menu title
@@ -320,6 +310,16 @@ class Page{
 					array($this, 'displayPage'),   // Calback function to display the page contents
 					$settings['menu_icon'],        // The icon url or "Dashicons" class
 					$settings['menu_position']     // Menu position
+				);
+			}
+			else{
+				add_submenu_page( 
+					$settings['parent_slug'],      // Parent page slug
+					$settings['page_title'],       // Page title
+					$settings['menu_title'],       // Menu title
+					$settings['capability'],       // Capability
+					$this->id,                     // Menu slug
+					array($this, 'displayPage')    // Calback function to display the page contents
 				);
 			}
 		}
@@ -337,18 +337,22 @@ class Page{
 	 */
 	public function pageSettings($settings = array()){
 
-		// Menu type. `menu` or `submenu`
-		if( !empty($settings['menu_type']) && 
-			in_array( $settings['menu_type'], array('menu', 'submenu') )
-		){
-			$menu_type = trim( $settings['menu_type'] );
+		// Parent page menu slug
+		if( isset( $settings['parent_slug'] ) ){
+			if( $settings['parent_slug'] === false ){
+				$parent_slug = $settings['parent_slug'];
+			}
+			elseif( $settings['parent_slug'] === null ){
+				$parent_slug = 'options.php';
+			}
+			else{
+				$parent_slug = trim( $settings['parent_slug'] );
+			}
 		}
 		else{
-			$menu_type = 'submenu';
+			$parent_slug = 'options.php';//Under "Settings" parent menu
 		}
-
-		// Parent page menu slug
-		$parent_slug = ! empty( $settings['parent_slug'] ) ? trim( $settings['parent_slug'] ) : null;
+		
 		
 		// Get the correct page title
 		$page_title  = ! empty($settings['page_title']) ? trim( $settings['page_title'] ) : '';
@@ -389,7 +393,6 @@ class Page{
 			$menu_position = null;
 		}
 
-		$menu_settings['menu_type']     = $menu_type;         // Menu type
 		$menu_settings['parent_slug']   = $parent_slug;       // Parent page slug
 		$menu_settings['page_title']    = $page_title;        // Page title
 		$menu_settings['menu_title']    = $menu_title;        // Menu title

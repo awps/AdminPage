@@ -10,7 +10,7 @@ class ExamplePage extends ZeroWP\Admin\Page{
 
     public function settings(){
         return array(
-            'menu_type'     => 'menu',
+            'parent_slug'   => null,
             'menu_title'    => __('Example page', 'text-domain'),
         );
     }

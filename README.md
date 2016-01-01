@@ -20,8 +20,8 @@ class ExamplePage extends ZeroWP\Admin\Page{
 
 	public function settings(){
 		return array(
-			'menu_type'     => 'menu',
-			'menu_title'    => __('Example page', 'text-domain'),
+			'parent_slug' => false, // This is a parent page, not a subpage
+			'menu_title'  => __('Example page', 'text-domain'),
 		);
 	}
 
@@ -63,7 +63,6 @@ public function settings(){
 	return array(
 		'menu_title'    => '',
 		'page_title'    => '',
-		'menu_type'     => 'menu',
 		'parent_slug'   => null,
 		'capability'    => 'manage_options',
 		'menu_icon'     => '',
@@ -79,11 +78,8 @@ public function settings(){
 * **'page_title'**<br />
 	Default: `''`. The text to be displayed in the title tags of the page when the menu is selected. If empty 'menu_title' is used 
 
-* **'menu_type'**<br />
-	Default: `'menu'`. The menu type `'menu'` or `'submenu'`. 
-
 * **'parent_slug'**<br />
-	Default: `null`.  If 'menu_type' is 'submenu' specify the parent page slug. Eg: tools.php
+	Default: `null`.  If is 'null', the page will not be added to menu. If 'false', will be a parent page(menu). Else, subpage(submenu).
 
 * **'capability'**<br />
 	Default: `'manage_options'`.  Who can access the page. See: https://codex.wordpress.org/Roles_and_Capabilities
